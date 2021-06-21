@@ -35,7 +35,7 @@ Below is a description of the available notebooks:
 
 2_Train_Test_Model.ipynb
 - building model architecture, setting hyper-parameters, and training model using Torch
-- required files to run this notebook:  DR12Q-63000.h5
+- required files to run this notebook:  DR16Q-63000.h5
 - result of testing the FNet
 
 
