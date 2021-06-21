@@ -12,5 +12,11 @@ Required packages:
 - matplotlib
 - seaborn
 - sklearn
+- skorch
 - jupyter
-- 
+
+All those packages can be installed with pip.
+
+```
+pip install <package>...<package>
+```
