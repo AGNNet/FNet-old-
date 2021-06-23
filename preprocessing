@@ -64,7 +64,7 @@ with open('zqn.csv') as f:
 z_qn= np.asarray(z_qn)
 
 
-hf = h5py.File('DR16Q.h5', 'w')
+hf = h5py.File('DR16Q_63000.h5', 'w')
 hf.create_dataset('FLUX', data=pixels)
 hf.create_dataset('Z_PCA', data=z_pca)
 hf.create_dataset('Z_VI', data=z_vi)
