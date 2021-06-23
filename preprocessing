@@ -26,7 +26,7 @@ def _getData(filename,lower,upper,redshifted=False):
     return dataSelected,z
 
 
-folder='Download_Data'
+folder='Download-Data'
 filenames = [x for x in os.listdir(folder) if x.endswith(".fits")]
 
 pixels = []
