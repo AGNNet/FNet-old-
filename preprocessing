@@ -1,1 +1,74 @@
+import os
+import random
+import pandas as pd
+import numpy as np
+import astropy.io.fits as fits
+from astropy.table import Table
+from astropy.io import fits
+import h5py
+
+def _getData(filename,lower,upper,redshifted=False):
+    
+    obj=fits.open(filename)    
+    data = Table.read(obj,hdu=1).to_pandas()
+    z = Table.read(obj,hdu=2)['Z'].item()
+    data['lam'] = np.power(10,data['LOGLAM'])    
+    
+    
+    lam = np.linspace(lower,upper,2000)
+    flux = np.interp(lam, data['lam'], data['FLUX'])
+    
+    # normalize data
+    std = np.std(flux)
+    avg = np.mean(flux)
+    fluxNormalized = (flux-avg)/std
+    dataSelected = pd.DataFrame({'lam': lam, 'flux': flux, 'fluxNormalized': fluxNormalized})
+    return dataSelected,z
+
+
+folder='Dataset'
+filenames = [x for x in os.listdir(folder) if x.endswith(".fits")]
+
+pixels = []
+zs = []
+
+for filename in filenames:
+    data, z = _getData(folder+'/'+filename ,lower=3500,upper=10000, redshifted=True )
+    pixels.append(data['fluxNormalized'].tolist())
+    zs.append(z)
+    
+
+pixels = np.asarray(pixels)
+zs = np.asarray(zs)
+
+pixels.tofile('flux.csv', sep=",")
+zs.tofile('zpipe.csv', sep=",")
+
+import csv
+with open('zpca.csv') as f:
+    reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONNUMERIC)
+    z_pca= list(reader)
+    
+z_pca= np.asarray(z_pca)
+
+with open('zvi.csv') as f:
+    reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONNUMERIC)
+    z_vi= list(reader)
+    
+z_vi= np.asarray(z_vi)
+
+with open('zqn.csv') as f:
+    reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONNUMERIC)
+    z_qn= list(reader)
+    
+z_qn= np.asarray(z_qn)
+
+
+hf = h5py.File('DR16Q.h5', 'w')
+hf.create_dataset('FLUX', data=pixels)
+hf.create_dataset('Z_PCA', data=z_pca)
+hf.create_dataset('Z_VI', data=z_vi)
+hf.create_dataset('Z_QN', data=z_qn)
+
+hf.close()
 
