@@ -27,13 +27,17 @@ conda install <package>...<package>
 
 Below is a description of the available notebooks:
 
+1- download-data:
+with wget and using DR16Q.txt, Data can be downloaded from SDSS.
+z_pca,z_vi,z_qn are avaiable in DR16Q_v4.fits, https://www.sdss.org/dr16/algorithms/qso_catalog/, the conditions that mentioned im the paper should be consider.
 
-1_Preprocessing:
-- preprocessing of the raw data to create a understandable dataset to CNN
-- files created in this notebooks: DR16Q-2.5-3.h5, DR16Q-63000.h5
+2_Preprocessing:
+-  Normalization, preprocessing of the raw data to create an understandable dataset to CNN,
+- required files to run this notebook: download-data, z_pca, z_vi, z_qn
+- DR16Q-63000.h5 will be created
 
-2_Train_Test_Model:
-- building model architecture, setting hyper-parameters, and training model using Torch
+3_Train_Test_Model:
+- building model architecture, setting hyper-parameters, and training model using pyTorch
 - required files to run this notebook:  DR16Q-63000.h5
 - result of testing the FNet
 
